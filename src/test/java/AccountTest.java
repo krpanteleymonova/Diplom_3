@@ -9,20 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
-
-import static model.LoginPage.ENTER_HEADER;
-import static model.LoginPage.LOGIN_BUTTON;
-import static model.MainPage.INGREDIENTS;
-import static model.MainPage.LOGIN;
-import static model.ProfilePage.CONSTRUCTOR_BUTTON;
-import static model.ProfilePage.EXIT_BUTTON;
-import static model.ProfilePage.LOGO;
-import static model.ProfilePage.MENU;
-
 
 public class AccountTest {
     protected WebDriver driver;
@@ -40,7 +28,6 @@ public class AccountTest {
         // ChromeOptions options=new ChromeOptions();
         // options.setBinary("C:\\Users\\Name\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe");
         //  driver = new ChromeDriver(options);
-
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         mainPage = new MainPage(driver);
         loginPage = new LoginPage(driver);
@@ -56,45 +43,39 @@ public class AccountTest {
 
     @Test
     @DisplayName("Выход из личного кабинета по кнопке «Выход»")
-    public void ExitButtonCheckTest() {
+    public void exitButtonCheckTest() {
         loginButtonCheck();
-        profilePage.clickButton(EXIT_BUTTON);
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(ENTER_HEADER));
+        profilePage.exitClickButton();
+        loginPage.waitVisibilityOfElementLocated();
         loginPage.assertURLLogin();
     }
 
     @Test
     @DisplayName("Переход из личного кабинета по клику на «Конструктор» ")
-    public void ConstructorButtonCheckTest() {
+    public void constructorButtonCheckTest() {
         loginButtonCheck();
-        profilePage.clickButton(CONSTRUCTOR_BUTTON);
+        profilePage.constructorClickButton();
         mainPage.assertURLMainPage();
-        mainPage.buttonIsDisplayed(INGREDIENTS);
-
-
+        mainPage.ingrediensIsDisplayed();
     }
 
     @Test
     @DisplayName("Переход из личного кабинета по клику на логотип ")
     public void logoButtonCheckTest() {
         loginButtonCheck();
-        profilePage.clickButton(LOGO);
+        profilePage.logoClickButton();
         mainPage.assertURLMainPage();
-        mainPage.buttonIsDisplayed(INGREDIENTS);
-
-
+        mainPage.ingrediensIsDisplayed();
     }
-
 
     @Step("Переход в личный кабинет авторизированного пользователя")
     public void loginButtonCheck() {
         loginPage.open();
         loginPage.enterEmail(UserGenerator.defaultEmail);
         loginPage.enterPassword(UserGenerator.defaultPassword);
-        loginPage.clickButton(LOGIN_BUTTON);
-        mainPage.clickLoginButton(LOGIN);
-
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(MENU));
+        loginPage.loginClickButton();
+        mainPage.clickLoginButton();
+        profilePage.waitVisibilityOfElementLocated();
         profilePage.assertURLMainPage();
     }
 

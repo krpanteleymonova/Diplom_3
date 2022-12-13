@@ -1,12 +1,13 @@
 package model;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class ForgotPasswordPage {
 
-    public static final String FORGOT_PASSWORD_URL = "https://stellarburgers.nomoreparties.site/forgot-password";
-    public static final By ENTER_BUTTON = By.className("Auth_link__1fOlj");
+    private static final String FORGOT_PASSWORD_URL = "https://stellarburgers.nomoreparties.site/forgot-password";
+    private static final By ENTER_BUTTON = By.className("Auth_link__1fOlj");
 
     private final WebDriver driver;
 
@@ -14,11 +15,13 @@ public class ForgotPasswordPage {
         this.driver = driver;
     }
 
+    @Step("Открытие страницы")
     public void open() {
         driver.get(FORGOT_PASSWORD_URL);
     }
 
-    public void clickButton(By selector) {
-        driver.findElement(selector).click();
+    @Step("Нажатие на кнопку 'Вход'")
+    public void clickButton() {
+        driver.findElement(ENTER_BUTTON).click();
     }
 }
